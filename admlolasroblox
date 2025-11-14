@@ -1,0 +1,23 @@
+
+
+local ArrayField = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/ArrayField/main/Source'))()local Window = ArrayField:CreateWindow({
+    Name ="Delta Pet Spawner",    LoadingTitle ="Delta Interface",    LoadingSubtitle ="Adopt Me Exploit",    ConfigurationSaving = {Enabled = false},    Discord = {Enabled = false},    KeySystem = false
+})local Tab = Window:CreateTab("Pet Spawner", 4483362458)local Players = game:GetService("Players")local Workspace = game:GetService("Workspace")local LocalPlayer = Players.LocalPlayer
+local TweenService = game:GetService("TweenService")-- Core spawn function
+local function spawnPet(petName)    if not petName or petName == "" then return end
+    local pet = Workspace:FindFirstChild(petName) or (Workspace:FindFirstChild("Pets") and Workspace.Pets:FindFirstChild(petName))    if not pet then return end
+
+    local clone = pet:Clone()    clone.Parent = Workspace:FindFirstChild("Pets") or Workspace
+    clone:PivotTo(LocalPlayer.Character.HumanoidRootPart.CFrame* CFrame.new(0, 5, 0))    -- Glow effect
+    local glow = Instance.new("SelectionBox")    glow.Adornee = clone
+    glow.Color3 = Color3.fromRGB(0, 255, 255)    glow.LineThickness = 0.3
+    glow.Transparency = 0
+    glow.Parent = clone
+    TweenService:Create(glow, TweenInfo.new(1), {Transparency = 1}):Play()    task.delay(1, function() glow:Destroy() end)end
+
+-- UI Elements
+Tab:CreateSection("Spawn Pet", false)local petInput = Tab:CreateInput({
+    Name ="Pet Name",    PlaceholderText ="e.g. Unicorn, Dragon",    RemoveTextAfterFocusLost = false,
+    Callback = function() end
+})Tab:CreateButton({
+    Name ="SPAWN PET",    Interact ="Spawn",    Callback = function()        spawnPet(petInput.Value)    end
